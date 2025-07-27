@@ -1,0 +1,203 @@
+body {
+    background: linear-gradient(135deg, #f5f7fa 0%, #e0e7ff 100%) !important;
+    min-height: 100vh;
+    margin: 0;
+  }
+  
+  .signup-layout {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e0e7ff 100%);
+    gap: 0;
+  }
+  
+  .signup-image-section {
+    width: 60vw;
+    max-width: 60vw;
+    min-width: 0;
+    height: 100vh;
+    display: flex;
+    align-items: stretch;
+    justify-content: stretch;
+    overflow: hidden;
+    border-radius: 0 350px 350px 0;
+  }
+  
+  .signup-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0;
+    box-shadow: none;
+    border: none;
+    background: #fff;
+    display: block;
+    border-radius: 0 350px 350px 0;
+  }
+  
+  .signup-form-section {
+    width: 40vw;
+    max-width: 40vw;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+  }
+  
+  .signup-form {
+    background: #fff;
+    padding: 2.5rem 2.2rem 2rem 2.2rem;
+    border-radius: 18px;
+    box-shadow: 0 8px 40px 0 rgba(60,72,180,0.18), 0 1.5px 8px 0 rgba(60,72,180,0.10);
+    min-width: 340px;
+    max-width: 95vw;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    border: 1.5px solid #e0e7ff;
+  }
+  
+  .form-title {
+    margin-bottom: 0.5rem;
+    color: #22223b;
+    font-size: 2rem;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 0.5px;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    margin-bottom: 0.7rem;
+  }
+  
+  .form-group label {
+    font-weight: 500;
+    color: #4a4e69;
+    margin-bottom: 2px;
+  }
+  
+  .form-group input {
+    padding: 0.7rem 0.85rem;
+    border-radius: 10px;
+    border: 1.5px solid #c9c9c9;
+    font-size: 1.05rem;
+    background: #f8f8fa;
+    transition: border 0.2s, box-shadow 0.2s;
+    box-shadow: 0 1px 2px rgba(100,108,255,0.04);
+    color: #222; /* Make input text black */
+  }
+  .form-group input::placeholder {
+    color: #888;
+    opacity: 1;
+  }
+  .form-group input:focus {
+    outline: none;
+    border: 1.5px solid #646cff;
+    background: #fff;
+    box-shadow: 0 0 0 2px #646cff22;
+  }
+  
+  .password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
+  .password-wrapper input {
+    width: 100%;
+    padding-right: 2.2rem; /* space for the icon */
+  }
+  
+  .show-password-btn {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.15rem;
+    color: #888;
+    padding: 0 0.2rem;
+    display: flex;
+    align-items: center;
+    z-index: 2;
+    height: 100%;
+  }
+  .show-password-btn:active {
+    color: #646cff;
+  }
+  
+  .submit-btn {
+    width: 100%;
+    padding: 0.95rem;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(90deg, #646cff 60%, #4f46e5 100%);
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.15rem;
+    cursor: pointer;
+    margin-top: 0.7rem;
+    box-shadow: 0 2px 12px rgba(100,108,255,0.13);
+    transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+    letter-spacing: 0.2px;
+  }
+  .submit-btn:hover {
+    background: linear-gradient(90deg, #4f46e5 60%, #646cff 100%);
+    box-shadow: 0 4px 20px rgba(100,108,255,0.18);
+    transform: translateY(-2px) scale(1.03);
+  }
+  
+  .error {
+    color: #e63946;
+    background: #ffeaea;
+    border-radius: 6px;
+    padding: 0.3rem 0.7rem;
+    font-size: 0.98rem;
+    margin-top: 2px;
+    margin-bottom: 0;
+    font-weight: 500;
+  }
+  
+  @media (max-width: 900px) {
+    .signup-layout {
+      flex-direction: column;
+      gap: 0;
+      padding: 0;
+    }
+    .signup-image-section {
+      width: 100vw;
+      max-width: 100vw;
+      height: 220px;
+      min-height: 180px;
+      max-height: 260px;
+    }
+    .signup-image {
+      height: 100%;
+      min-height: 180px;
+      max-height: 260px;
+    }
+    .signup-form-section {
+      width: 100vw;
+      max-width: 100vw;
+      min-width: 0;
+    }
+  }
+  
+  @media (max-width: 500px) {
+    .signup-form {
+      min-width: 90vw;
+      padding: 1.2rem 0.7rem 1.2rem 0.7rem;
+    }
+    .form-title {
+      font-size: 1.3rem;
+    }
+  }
+  

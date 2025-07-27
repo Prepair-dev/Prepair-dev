@@ -1,17 +1,13 @@
 {
-    
+"config_data":{
     "user-auth-routes":{
-        "register":{
-            "url":"/user-auth/register",
-            "method":"POST"
-        },
-        "login":{
-            "url":"/user-auth/login",
-            "method":"POST"
-        }
+            "user-signup":"http://127.0.0.1:8001/user-auth/register",
+            "user-login":"http://127.0.0.1:8001/user-auth/login"
+    }
 }
 
 }
+
 
 
 
