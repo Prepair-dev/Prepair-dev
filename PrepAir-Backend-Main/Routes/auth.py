@@ -1,14 +1,16 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends, Request
 from pydantic import BaseModel
 from db import auth_user_collection
 import bcrypt
 import jwt
 from datetime import datetime, timedelta
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
 router = APIRouter()
 
 SECRET_KEY = "mysecretkey"
 ALGORITHM = "HS256"
+security = HTTPBearer()
 
 # Pydantic models
 class UserRegister(BaseModel):
@@ -34,7 +36,7 @@ def create_jwt_token(username: str):
     return jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
 
 # 🚀 Register route
-@router.post("/register")
+@router.post("/user-auth/register")
 async def register_user(user: UserRegister):
     existing_user = await auth_user_collection.find_one({"username": user.username})
     if existing_user:
@@ -55,8 +57,7 @@ async def register_user(user: UserRegister):
         "username": user.username
     }
 
-# 🔐 Login route
-@router.post("/login")
+@router.post("/user-auth/login")
 async def login_user(user: UserLogin):
     db_user = await auth_user_collection.find_one({"username": user.username})
     
@@ -69,4 +70,19 @@ async def login_user(user: UserLogin):
         "message": "Login successful",
         "username": user.username,
         "token": token
+    }
+
+@router.post("/user-auth/logout")
+async def logout_user(credentials: HTTPAuthorizationCredentials = Depends(security)):
+    token = credentials.credentials
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        username = payload.get("sub")
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(status_code=401, detail="Token expired")
+    except jwt.InvalidTokenError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+    return {
+        "message": f"User '{username}' logged out successfully. Please discard the token client-side."
     }
