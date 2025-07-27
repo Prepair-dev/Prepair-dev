@@ -22,9 +22,14 @@ async def user_examdetails(details: ExamDetails):
         {"$sample": {"size": details.total_questions}},
         {"$project": {
             "_id": 0,
+            "exam_name": 1,
             "question": 1,
             "options": 1,
-            "correctOption": 1
+            "correctOption": 1,
+            "level": 1,
+            "weightage": 1,
+            "topic": 1,
+            "subtopic" : 1
         }}
     ]
 
