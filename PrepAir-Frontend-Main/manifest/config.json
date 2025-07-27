@@ -1,0 +1,21 @@
+{
+    
+    "user-auth-routes":{
+        "register":{
+            "url":"/user-auth/register",
+            "method":"POST"
+        },
+        "login":{
+            "url":"/user-auth/login",
+            "method":"POST"
+        }
+}
+
+}
+
+
+
+
+
+
+
