@@ -11,3 +11,4 @@ database = client.mydatabase  # Replace with your database name
 # Collections
 mcqs_collection = database.mcqs  
 auth_user_collection = database.auth_user  
+user_records_collection = database.user_records
