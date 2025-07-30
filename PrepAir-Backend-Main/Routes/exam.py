@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from typing import List
 from db import mcqs_collection  # Import MongoDB collection
 import random
+from fastapi import Query
 
 router = APIRouter()
 
@@ -64,3 +65,63 @@ async def user_examresponse(answers: List[UserAnswer]):
         "correct": correct_count,
         "incorrect": incorrect_count
     }
+
+
+#http://127.0.0.1:8001/get_exam_prefernce?exam_name=GATE
+@router.get("/get_exam_prefernce")
+async def get_exam_prefernce(exam_name: str = Query(None)):
+    match_stage = {}
+
+    if exam_name:
+        match_stage["exam_name"] = exam_name
+
+    pipeline = []
+
+    if match_stage:
+        pipeline.append({"$match": match_stage})
+
+    pipeline.append({
+        "$group": {
+            "_id": {
+                "exam_name": "$exam_name",
+                "topic": "$topic",
+                "subtopic": "$subtopic"
+            }
+        }
+    })
+
+    raw_data = []
+    async for entry in mcqs_collection.aggregate(pipeline):
+        raw_data.append(entry["_id"])
+
+    structured = {}
+
+    for item in raw_data:
+        exam = item["exam_name"]
+        topic = item["topic"]
+        subtopic = item["subtopic"]
+
+        if exam not in structured:
+            structured[exam] = {}
+
+        if topic not in structured[exam]:
+            structured[exam][topic] = set()
+
+        structured[exam][topic].add(subtopic)
+
+    # Convert to list of dicts
+    result = []
+    for exam_name, topics in structured.items():
+        topic_list = []
+        for topic, subtopics in topics.items():
+            topic_list.append({
+                "topic": topic,
+                "subtopics": sorted(list(subtopics))
+            })
+        result.append({
+            "exam_name": exam_name,
+            "topics": topic_list
+        })
+
+    return result
+

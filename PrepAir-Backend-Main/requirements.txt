@@ -1,6 +1,6 @@
-fastapi==0.95.0
-uvicorn==0.23.0
-motor==2.5.1
-pydantic==1.10.2
-bcrypt==4.0.1
-PyJWT==2.8.0
+fastapi==0.110.1      # Latest stable FastAPI as of 2025
+uvicorn==0.29.0       # Compatible with FastAPI and Python 3.11
+motor==3.3.1          # Fully supports Python 3.11+ (fixes coroutine issue)
+pydantic==1.10.15     # Final 1.x version; still widely supported
+bcrypt==4.1.3         # Latest version
+PyJWT==2.8.0          # Already up-to-date
