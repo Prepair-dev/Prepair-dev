@@ -12,6 +12,9 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import QuizCatalog from "./components/QuizCatalog";
 import CategoryQuizzes from "./pages/Dashboard/CategoryQuizzes";
 import QuizSetup from "./components/QuizSetup";
+import QuizTest from "./pages/Dashboard/MCQTest";
+import QuizResult from "./pages/Dashboard/QuizResult";
+import MCQTest from "./pages/Dashboard/MCQTest";
 
 
 const PrivateRoute = ({ children }) => {
@@ -95,6 +98,18 @@ function App() {
         {
           path: "quiz/setup/:quizId", 
           element: <QuizSetup />,
+        },
+        {
+          path: "quiz/test",
+          element: (
+            <PrivateRoute>
+              <MCQTest />
+            </PrivateRoute>
+          ),
+        },
+        {
+          path: 'quiz/result',
+          element: <QuizResult />,
         },
       ],
     },
