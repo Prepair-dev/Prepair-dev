@@ -1,6 +1,21 @@
-fastapi==0.110.1      # Latest stable FastAPI as of 2025
-uvicorn==0.29.0       # Compatible with FastAPI and Python 3.11
-motor==3.3.1          # Fully supports Python 3.11+ (fixes coroutine issue)
-pydantic==1.10.15     # Final 1.x version; still widely supported
-bcrypt==4.1.3         # Latest version
-PyJWT==2.8.0          # Already up-to-date
+fastapi==0.110.1           # Latest stable FastAPI (2025)
+uvicorn==0.29.0            # Compatible with FastAPI and Python 3.11
+pydantic==1.10.15          # Last stable 1.x release (FastAPI 0.110 uses pydantic v1)
+bcrypt==4.1.3              # Secure password hashing
+PyJWT==2.8.0               # JWT support
+
+motor==3.3.1               # Async MongoDB driver (compatible with Python 3.11)
+pymongo==4.6.1             # Compatible with motor 3.3.1
+
+python-dotenv==1.0.1       # For loading environment variables from .env
+
+# New 2025 updated-
+# fastapi==0.110.1         # Latest FastAPI stable release (Python 3.11 compatible)
+# uvicorn[standard]==0.29.0  # Includes live reload, httptools, etc.
+# pydantic==1.10.15         # Last of the Pydantic v1 series (compatible with FastAPI 0.110.1)
+# motor==3.3.1              # MongoDB async driver (supports pymongo>=4.5,<5)
+# pymongo==4.6.1            # Official MongoDB client library (compatible with motor 3.3.1)
+# bcrypt==4.1.3             # For password hashing
+# PyJWT==2.8.0              # JWT token encoding/decoding
+# python-dotenv==1.0.1      # Optional: for environment variable management
+

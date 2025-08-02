@@ -5,6 +5,7 @@ import bcrypt
 import jwt
 from datetime import datetime, timedelta
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from typing import List
 
 router = APIRouter()
 
@@ -14,12 +15,13 @@ security = HTTPBearer()
 
 # Pydantic models
 class UserRegister(BaseModel):
-    username: str
+    firstname: str
+    lastname: str
     email: str
     password: str
 
 class UserLogin(BaseModel):
-    username: str
+    student_id: str
     password: str
 
 # Password hashing
@@ -35,18 +37,40 @@ def create_jwt_token(username: str):
     payload = {"sub": username, "exp": expiration}
     return jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
 
-# 🚀 Register route
+# Register route
 @router.post("/user-auth/register")
 async def register_user(user: UserRegister):
-    existing_user = await auth_user_collection.find_one({"username": user.username})
-    if existing_user:
-        raise HTTPException(status_code=400, detail="Username already exists")
+    # Check if email already exists
+    if await auth_user_collection.find_one({"email": user.email}):
+        raise HTTPException(status_code=400, detail="Email already registered")
+
+    # Get the user with the highest student_id (numeric suffix)
+    latest_user = await auth_user_collection.find_one(
+        {"student_id": {"$regex": "@2025\\d+$"}},
+        sort=[("student_id", -1)]
+    )
+
+    if latest_user and "student_id" in latest_user:
+        try:
+            last_suffix = int(latest_user["student_id"].split("@2025")[-1])
+            new_suffix = last_suffix + 1
+        except:
+            new_suffix = 1
+    else:
+        new_suffix = 1
+
+    # Create student_id globally: firstname_lastname@2025{suffix}
+    prefix = f"{user.firstname.lower()}_{user.lastname.lower()}"
+    student_id = f"{prefix}@2025{new_suffix}"
 
     hashed_pw = hash_password(user.password)
+
     user_doc = {
-        "username": user.username,
+        "firstname": user.firstname,
+        "lastname": user.lastname,
         "email": user.email,
         "password": hashed_pw,
+        "student_id": student_id,
         "created_at": datetime.utcnow()
     }
 
@@ -54,23 +78,25 @@ async def register_user(user: UserRegister):
 
     return {
         "message": "User registered successfully",
-        "username": user.username
+        "student_id": student_id
     }
+
 
 @router.post("/user-auth/login")
 async def login_user(user: UserLogin):
-    db_user = await auth_user_collection.find_one({"username": user.username})
+    db_user = await auth_user_collection.find_one({"student_id": user.student_id})
     
     if not db_user or not verify_password(user.password, db_user["password"]):
-        raise HTTPException(status_code=401, detail="Invalid username or password")
+        raise HTTPException(status_code=401, detail="Invalid student ID or password")
 
-    token = create_jwt_token(user.username)
+    token = create_jwt_token(user.student_id)
 
     return {
         "message": "Login successful",
-        "username": user.username,
+        "student_id": user.student_id,
         "token": token
     }
+
 
 @router.post("/user-auth/logout")
 async def logout_user(credentials: HTTPAuthorizationCredentials = Depends(security)):
@@ -86,3 +112,16 @@ async def logout_user(credentials: HTTPAuthorizationCredentials = Depends(securi
     return {
         "message": f"User '{username}' logged out successfully. Please discard the token client-side."
     }
+
+
+class UserOut(BaseModel):
+    firstname: str
+    lastname: str
+    student_id: str
+
+
+@router.get("/user-auth/users", response_model=List[UserOut])
+async def get_all_users():
+    users_cursor = auth_user_collection.find({}, {"_id": 0, "firstname": 1, "lastname": 1, "student_id": 1})
+    users = await users_cursor.to_list(length=100)
+    return users
