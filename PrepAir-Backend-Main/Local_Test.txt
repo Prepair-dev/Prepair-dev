@@ -1,0 +1,12 @@
+1.Locally coonect mongo 
+2.in db.py keep the Dev env mongo connection connected 
+3.Create mydatabase in mongo and three collection in that - 1. auth_user, 2. mcqs, 3. user_records
+4.add data to mcq collection add the mockquestion.json file as sample data
+
+Run Backend-
+1.cd to Backend folder
+2. On terminal python -m venv venv 
+3. venv\Scripts\activate
+4. pip install -r requirements.txt
+5. uvicorn main:app --reload --port 8001
+
